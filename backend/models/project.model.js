@@ -5,7 +5,10 @@ const projectSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    tableNumber: {
+    team: {
+        type: String,
+    },
+    table: {
         type: Number,
     },
     scores: [
@@ -15,7 +18,7 @@ const projectSchema = new mongoose.Schema({
                 ref: "Judge",
             },
             score: {
-                type: Number,
+                type: String,
                 required: true,
             },
         }
@@ -25,3 +28,6 @@ const projectSchema = new mongoose.Schema({
         default: 0,
     }
 });
+
+const Project = mongoose.model("Project", projectSchema);
+export default Project;

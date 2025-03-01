@@ -4,6 +4,8 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { app, server } from "./lib/socket.js";
 import authRoutes from './routes/auth.routes.js';
+import judgeRoutes from './routes/judge.routes.js';
+import projectRoutes from './routes/project.routes.js';
 import express from 'express';
 
 dotenv.config();
@@ -17,6 +19,8 @@ app.use(cors({
 }));
 
 app.use("/api/auth", authRoutes);
+app.use("/api/judge", judgeRoutes);
+app.use("/api/project", projectRoutes);
 
 server.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
