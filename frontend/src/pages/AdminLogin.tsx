@@ -1,15 +1,24 @@
 import React from 'react'
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { authStore } from '../store/authStore';
 
 export default function AdminLogin() {
+  const {login} = authStore();
   const [formData, setFormData] = useState({
-    email: "",
+    judgeID: "0",
     password: "",
   });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    try {
+      await login(formData);
+      // Redirect or update UI after successful login
+    } catch (error) {
+      console.error("Login failed", error);
+      // Handle login error
+    }
   };
 
   return (

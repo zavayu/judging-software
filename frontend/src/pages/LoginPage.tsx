@@ -1,15 +1,23 @@
-import React from 'react'
-import { useState } from 'react';
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom';
+import { authStore } from '../store/authStore';
 
 export default function LoginPage() {
+  const {login} = authStore();
   const [formData, setFormData] = useState({
     name: "",
-    judgeId: "",
+    judgeID: "",
   });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    try {
+      await login(formData);
+      // Redirect or update UI after successful login
+    } catch (error) {
+      console.error("Login failed", error);
+      // Handle login error
+    }
   };
 
   return (
@@ -52,8 +60,8 @@ export default function LoginPage() {
                 <input
                   className={'input input-bordered border-2 border-[#D9D9D9] w-full bg-inherit'}
                   placeholder="1234"
-                  value={formData.judgeId}
-                  onChange={(e) => setFormData({ ...formData, judgeId: e.target.value })}
+                  value={formData.judgeID}
+                  onChange={(e) => setFormData({ ...formData, judgeID: e.target.value })}
                 />
               </div>
             </div>
