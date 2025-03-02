@@ -2,11 +2,13 @@ import { create } from "zustand";
 import toast from "react-hot-toast";
 import { io, Socket } from "socket.io-client";
 import axios from "axios";
+import { Project } from "./interfaces";
 
 interface AuthUser {
   name: string;
   judgeID: string;
   role: string;
+  assignedProjects: Project[];
 }
 
 interface LoginData {

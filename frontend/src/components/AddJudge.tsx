@@ -8,11 +8,11 @@ export default function AddJudge() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await addJudge({ name, judgeID });
+    await addJudge({ name, judgeID, assignedProjects: [] });
     setName("");
     setJudgeID("");
   };
-  
+
   return (
     <div className="w-[85%] h-[65vh] justify-self-center border-4 border-[#383838] rounded-badge flex flex-col p-10 text-Secondary">
       <h1 className="text-3xl font-semibold pb-10">Add Judge</h1>

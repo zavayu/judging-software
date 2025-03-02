@@ -1,14 +1,18 @@
 import { create } from "zustand";
 import toast from "react-hot-toast";
 import axios from "axios";
+import { Project } from "./interfaces";
 
 interface Judge {
     judgeID: string;
     name: string;
+    assignedProjects: Project[];
 }
 
 interface JudgeStore {
     judges: Judge[];
+    selectedJudge: Judge | null;
+    setSelectedJudge: (selectedJudge: Judge | null) => void;
     fetchJudges: () => Promise<void>;
     addJudge: (judge: Judge) => Promise<void>;
     deleteJudge: (judgeID: string) => Promise<void>;
@@ -21,6 +25,9 @@ const axiosInstance = axios.create({
 
 export const judgeStore = create<JudgeStore>((set, get) => ({
     judges: [],
+    selectedJudge: null,
+
+    setSelectedJudge: (selectedJudge: Judge | null) => set({ selectedJudge }),
 
     fetchJudges: async () => {
         try {

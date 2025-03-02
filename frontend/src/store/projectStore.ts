@@ -1,12 +1,7 @@
 import { create } from "zustand";
 import toast from "react-hot-toast";
 import axios from "axios";
-
-interface Project {
-    name: string;
-    team: string;
-    table: string;
-}
+import { Project } from "./interfaces";
 
 interface ProjectStore {
     projects: Project[];

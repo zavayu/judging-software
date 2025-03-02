@@ -9,7 +9,7 @@ export default function AddProject() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await addProject({ name, team, table });
+    await addProject({ name, team, table, timesJudged: 0 });
     setName("");
     setTeam("");
     setTable("");

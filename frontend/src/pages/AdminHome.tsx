@@ -4,10 +4,13 @@ import ProjectList from "../components/ProjectList"
 import { useState } from "react"
 import AddJudge from "../components/AddJudge";
 import AddProject from "../components/AddProject";
+import { judgeStore } from "../store/judgeStore";
+import JudgeDetails from "../components/JudgeDetails";
 
 export default function AdminHome() {
   const [addingJudge, setAddingJudge] = useState(false);
   const [addingProject, setAddingProject] = useState(false);
+  const { selectedJudge, setSelectedJudge } = judgeStore();
 
   return (
     <div className="flex flex-row">
@@ -20,6 +23,7 @@ export default function AdminHome() {
           <button onClick={() => {
             setAddingProject(!addingProject);
             setAddingJudge(false);
+            setSelectedJudge(null);
           }}
             className="btn bg-[#65558F] hover:bg-[#a895da] text-white text-lg rounded-2xl border-white"
           >
@@ -29,6 +33,7 @@ export default function AdminHome() {
           <button onClick={() => {
             setAddingJudge(!addingJudge);
             setAddingProject(false);
+            setSelectedJudge(null);
           }}
             className="btn bg-[#65558F] hover:bg-[#a895da] text-white text-lg rounded-2xl border-white"
           >
@@ -37,9 +42,10 @@ export default function AdminHome() {
 
         </div>
 
-        {!addingJudge && !addingProject ? <ProjectList /> : null}
-        {addingJudge ? <AddJudge/> : null}
-        {addingProject ? <AddProject/> : null}
+        {!addingJudge && !addingProject && !selectedJudge ? <ProjectList /> : null}
+        {addingJudge && !selectedJudge ? <AddJudge/> : null}
+        {addingProject && !selectedJudge ? <AddProject/> : null}
+        {selectedJudge ? <JudgeDetails/> : null}
       </div>
     </div>
   )
