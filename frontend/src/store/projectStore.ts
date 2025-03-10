@@ -5,8 +5,11 @@ import { Project } from "./interfaces";
 
 interface ProjectStore {
     projects: Project[];
+    selectedProject: Project | null;
+    setSelectedProject: (selectedProject: Project | null) => void;
     fetchProjects: () => Promise<void>;
     addProject: (project: Project) => Promise<void>;
+    updateProject: (id: string, project: Partial<Project>) => Promise<void>;
     deleteProject: (name: string) => Promise<void>;
 }
 
@@ -17,6 +20,9 @@ const axiosInstance = axios.create({
 
 export const projectStore = create<ProjectStore>((set, get) => ({
     projects: [],
+    selectedProject: null,
+
+    setSelectedProject: (selectedProject: Project | null) => set({ selectedProject }),
 
     fetchProjects: async () => {
         try {
@@ -36,6 +42,20 @@ export const projectStore = create<ProjectStore>((set, get) => ({
         } catch (error) {
             console.error(error);
             toast.error("Failed to add project");
+        }
+    },
+
+    updateProject: async (id, project) => { 
+        try {
+            const res = await axiosInstance.put(`/project/update-project/${id}`, project);
+            set({
+                projects: get().projects.map(p => p._id === id ? res.data : p),
+                selectedProject: res.data,
+            });
+            toast.success("Project updated successfully");
+        } catch (error) {
+            console.error(error);
+            toast.error("Failed to update project");
         }
     },
 

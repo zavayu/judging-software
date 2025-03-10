@@ -12,7 +12,7 @@ export default function JudgeSidebar() {
       <div className="">
         <h2 className="text-xl font-semibold mt-3">Your Assigned Projects</h2>
         <ul className="mt-5">
-          {authUser?.assignedProjects.map((project) => (
+          {authUser?.assignedProjects?.map((project) => (
             <div className="text-left py-3 my-4 px-6 mx-4 bg-[#4A3353] rounded-2xl border-white border" key={project.name}>
               <li className="text-md">
                 <p className="text-white font-semibold">{project.team}</p>

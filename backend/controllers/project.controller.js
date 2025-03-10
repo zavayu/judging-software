@@ -24,6 +24,28 @@ export const addProject = async (req, res) => {
   }
 };
 
+// Update a project
+export const updateProject = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, team, table, scores, timesJudged } = req.body;
+
+    //console.log(`Updating project with ID: ${id}`);
+    const updatedProject = await Project.findByIdAndUpdate(
+      id,
+      { name, team, table, scores, timesJudged },
+      { new: true }
+    );
+    if (!updatedProject) {
+      return res.status(404).json({ message: "Project not found" });
+    }
+    res.status(200).json(updatedProject);
+  } catch (error) {
+    console.log("Error updating project:", error);
+    res.status(500).json({ message: "Failed to update project" });
+  }
+};
+
 // Delete a project
 export const deleteProject = async (req, res) => {
   try {

@@ -23,7 +23,7 @@ export default function AdminSidebar() {
 
 
   return (
-    <div className="bg-[#2D2B2E] h-full min-h-screen w-1/4 justify-center items-center text-center pt-10 text-Secondary">
+    <div className="bg-[#2D2B2E] h-screen min-h-screen w-1/4 justify-center items-center text-center pt-10 text-Secondary overflow-y-auto">
       <h1 className="text-2xl font-bold">
         Welcome, Admin!
       </h1>

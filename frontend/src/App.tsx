@@ -17,10 +17,10 @@ function App() {
   return (
     <div>
       <Routes>
-        <Route path="/" element={authUser?.role == "judge" ? <JudgeHome/> : <Navigate to="/login"/>} />
-        <Route path="/admin" element={authUser?.role == "admin" ? <AdminHome/> : <Navigate to="/login-admin"/>} />
-        <Route path="/login-admin" element={!authUser ? <AdminLogin/> : <Navigate to="/admin"/>} />
-        <Route path="/login" element={!authUser ? <LoginPage/> : <Navigate to="/"/>} />
+        <Route path="/" element={authUser ? (authUser.role === "judge" ? <JudgeHome /> : <Navigate to="/admin" />) : <Navigate to="/login" />} />
+        <Route path="/admin" element={authUser?.role === "admin" ? <AdminHome /> : <Navigate to="/login-admin" />} />
+        <Route path="/login-admin" element={!authUser ? <AdminLogin /> : <Navigate to="/admin" />} />
+        <Route path="/login" element={!authUser ? <LoginPage /> : (authUser.role === "judge" ? <Navigate to="/" /> : <Navigate to="/admin" />)} />
       </Routes>
       <Toaster/>
     </div>

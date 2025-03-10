@@ -5,6 +5,7 @@ import axios from "axios";
 import { Project } from "./interfaces";
 
 interface AuthUser {
+  _id: string;
   name: string;
   judgeID: string;
   role: string;

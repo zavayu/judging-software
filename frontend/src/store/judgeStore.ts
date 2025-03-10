@@ -4,6 +4,7 @@ import axios from "axios";
 import { Project } from "./interfaces";
 
 interface Judge {
+    _id: string;
     judgeID: string;
     name: string;
     assignedProjects: Project[];

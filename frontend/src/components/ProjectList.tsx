@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { projectStore } from "../store/projectStore"
 
 export default function ProjectList() {
-  const { projects, fetchProjects } = projectStore();
+  const { projects, fetchProjects, selectedProject, setSelectedProject } = projectStore();
 
   useEffect(() => {
     fetchProjects();
@@ -23,7 +23,9 @@ export default function ProjectList() {
         <ul className="mt-4">
           {readyToBeJudged.map((project) => (
             <li key={project.name} className="mb-2">
-              <div className="py-3 px-4 border border-gray-300 bg-[#333E63] rounded-2xl flex justify-between">
+              <div className={`py-3 px-4 border border-gray-300 bg-[#333E63] hover:bg-[#5d70ab] rounded-2xl flex justify-between cursor-pointer ${project === selectedProject ? "bg-[#5d70ab]" : ""
+                }`}
+                onClick={() => setSelectedProject(project)}>
                 <div>
                   <h3 className="text-md font-semibold text-white">{project.name}</h3>
                   <p className="text-sm">{project.team}</p>
@@ -45,7 +47,9 @@ export default function ProjectList() {
         <ul className="mt-4">
           {judgingInProgress.map((project) => (
             <li key={project.name} className="mb-2">
-              <div className="py-3 px-4 border border-gray-300 bg-[#333E63] rounded-2xl flex justify-between">
+              <div className={`py-3 px-4 border border-gray-300 bg-[#333E63] hover:bg-[#5d70ab] rounded-2xl flex justify-between cursor-pointer ${project === selectedProject ? "bg-[#5d70ab]" : ""
+                }`}
+                onClick={() => setSelectedProject(project)}>
                 <div>
                   <h3 className="text-md font-semibold text-white">{project.name}</h3>
                   <p className="text-sm">{project.team}</p>
@@ -71,7 +75,9 @@ export default function ProjectList() {
         <ul className="mt-4">
           {judgingCompleted.map((project) => (
             <li key={project.name} className="mb-2">
-              <div className="py-3 px-4 border border-gray-300 bg-[#333E63] rounded-2xl flex justify-between">
+              <div className={`py-3 px-4 border border-gray-300 bg-[#333E63] hover:bg-[#5d70ab] rounded-2xl flex justify-between cursor-pointer ${project === selectedProject ? "bg-[#5d70ab]" : ""
+                }`}
+                onClick={() => setSelectedProject(project)}>
                 <div>
                   <h3 className="text-md font-semibold text-white">{project.name}</h3>
                   <p className="text-sm">{project.team}</p>
