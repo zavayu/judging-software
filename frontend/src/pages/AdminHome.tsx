@@ -6,11 +6,14 @@ import AddJudge from "../components/AddJudge";
 import AddProject from "../components/AddProject";
 import { judgeStore } from "../store/judgeStore";
 import JudgeDetails from "../components/JudgeDetails";
+import { projectStore } from "../store/projectStore";
+import ProjectDetails from "../components/ProjectDetails";
 
 export default function AdminHome() {
   const [addingJudge, setAddingJudge] = useState(false);
   const [addingProject, setAddingProject] = useState(false);
   const { selectedJudge, setSelectedJudge } = judgeStore();
+  const { selectedProject, setSelectedProject } = projectStore();
 
   return (
     <div className="flex flex-row">
@@ -42,9 +45,10 @@ export default function AdminHome() {
 
         </div>
 
-        {!addingJudge && !addingProject && !selectedJudge ? <ProjectList /> : null}
+        {!addingJudge && !addingProject && !selectedJudge && !selectedProject ? <ProjectList /> : null}
         {addingJudge && !selectedJudge ? <AddJudge/> : null}
         {addingProject && !selectedJudge ? <AddProject/> : null}
+        {selectedProject ? <ProjectDetails/> : null}
         {selectedJudge ? <JudgeDetails/> : null}
       </div>
     </div>

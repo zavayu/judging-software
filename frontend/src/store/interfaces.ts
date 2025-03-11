@@ -1,3 +1,10 @@
+export interface Judge {
+  _id: string;
+  judgeID: string;
+  name: string;
+  assignedProjects: string[];
+}
+
 export interface Score {
   judge: string;
   score: string;

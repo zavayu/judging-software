@@ -11,6 +11,7 @@ interface ProjectStore {
     addProject: (project: Project) => Promise<void>;
     updateProject: (id: string, project: Partial<Project>) => Promise<void>;
     deleteProject: (name: string) => Promise<void>;
+    getProjectById: (id: string) => Promise<Project | null>;
 }
 
 const axiosInstance = axios.create({
@@ -68,5 +69,16 @@ export const projectStore = create<ProjectStore>((set, get) => ({
             console.error(error);
             toast.error("Failed to delete project");
         }
-    }
+    },
+
+    getProjectById: async (id) => {
+        try {
+            const res = await axiosInstance.get(`/project/${id}`);
+            return res.data;
+        } catch (error) {
+            console.error(error);
+            toast.error("Failed to fetch project details");
+            return null;
+        }
+    },
 }));

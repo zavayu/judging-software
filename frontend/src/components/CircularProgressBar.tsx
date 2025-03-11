@@ -12,7 +12,7 @@ const CircularProgressBar: FC<Props> = (props) => {
   const viewBox = `0 0 ${sqSize} ${sqSize}`
   const dashArray = radius * Math.PI * 2
   const dashOffset = dashArray - (dashArray * (percentage || 0)) / 100
-  const statusMessage = `${percentage}%`
+  const statusMessage = percentage.toFixed(2) + '%';
 
   return (
     <svg width={sqSize} height={sqSize} viewBox={viewBox}>

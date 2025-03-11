@@ -38,3 +38,22 @@ export const deleteJudge = async (req, res) => {
     res.status(500).json({ message: "Failed to delete judge" });
   }
 };
+
+// Assign a project to a judge
+export const assignProjectToJudge = async (req, res) => {
+  try {
+    const { judgeID, projectID } = req.params;
+    const judge = await Judge.findOne({ judgeID });
+    if (!judge) {
+      return res.status(404).json({ message: "Judge not found" });
+    }
+    if (!judge.assignedProjects.includes(projectID)) {
+      judge.assignedProjects.push(projectID);
+      await judge.save();
+    }
+    res.status(200).json(judge);
+  } catch (error) {
+    console.error("Error assigning project to judge:", error);
+    res.status(500).json({ message: "Failed to assign project to judge" });
+  }
+};

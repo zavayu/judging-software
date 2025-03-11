@@ -13,7 +13,7 @@ export default function ProjectList() {
   const judgingCompleted = projects.filter(project => project.timesJudged >= 4);
 
   return (
-    <div className="w-[85%] sm:h-[70vh] justify-self-center border-4 border-[#383838] rounded-badge flex flex-col sm:flex-row sm:grid-rows-3 justify-center sm:justify-between p-10 text-Secondary overflow-scroll">
+    <div className="w-[85%] sm:h-[70vh] justify-self-center sm:border-4 border-[#383838] rounded-badge flex flex-col sm:flex-row sm:grid-rows-3 justify-center sm:justify-between p-10 text-Secondary overflow-scroll">
       {/*Ready to be Judged:*/}
       <div className="sm:w-[30%]">
         <div className="flex flex-row justify-between">

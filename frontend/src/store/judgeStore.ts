@@ -7,7 +7,7 @@ interface Judge {
     _id: string;
     judgeID: string;
     name: string;
-    assignedProjects: Project[];
+    assignedProjects: string[];
 }
 
 interface JudgeStore {
@@ -17,6 +17,7 @@ interface JudgeStore {
     fetchJudges: () => Promise<void>;
     addJudge: (judge: Judge) => Promise<void>;
     deleteJudge: (judgeID: string) => Promise<void>;
+    assignProjectToJudge: (judgeID: string, projectID: string) => Promise<void>;
 }
 
 const axiosInstance = axios.create({
@@ -60,5 +61,20 @@ export const judgeStore = create<JudgeStore>((set, get) => ({
             console.error(error);
             toast.error("Failed to delete judge");
         }
-    }
+    },
+
+    assignProjectToJudge: async (judgeID, projectID) => {
+      try {
+        const res = await axiosInstance.put(`/judge/assign-project/${judgeID}/${projectID}`);
+        set({
+          judges: get().judges.map((judge) =>
+            judge.judgeID === judgeID ? res.data : judge
+          ),
+        });
+        toast.success("Project assigned to judge successfully");
+      } catch (error) {
+        console.error(error);
+        toast.error("Failed to assign project to judge");
+      }
+    },
 }));

@@ -24,6 +24,21 @@ export const addProject = async (req, res) => {
   }
 };
 
+// Fetch a project by ID
+export const getProjectById = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const project = await Project.findById(id);
+    if (!project) {
+      return res.status(404).json({ message: "Project not found" });
+    }
+    res.status(200).json(project);
+  } catch (error) {
+    console.error("Error fetching project:", error);
+    res.status(500).json({ message: "Failed to fetch project" });
+  }
+};
+
 // Update a project
 export const updateProject = async (req, res) => {
   try {
@@ -39,7 +54,7 @@ export const updateProject = async (req, res) => {
     if (!updatedProject) {
       return res.status(404).json({ message: "Project not found" });
     }
-    res.status(200).json(updatedProject);
+    //res.status(200).json(updatedProject);
   } catch (error) {
     console.log("Error updating project:", error);
     res.status(500).json({ message: "Failed to update project" });

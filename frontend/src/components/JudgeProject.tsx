@@ -107,11 +107,11 @@ export default function JudgeProject() {
   };
 
   return (
-    <div className="sm:w-[85%] h-[85vh] justify-self-center border-4 border-[#383838]  bg-[#383838] rounded-badge flex flex-col px-7 py-6 text-white">
+    <div className="sm:w-[85%] min-h-[85vh] justify-self-center border-4 border-[#383838]  bg-[#383838] rounded-badge flex flex-col px-7 py-6 text-white">
 
       <div className="relative sm:flex gap-10">
         <button onClick={() => setSelectedProject(null)}>
-          <img src="/arrow_back.svg" alt="back" className="size-10 hover:scale-[1.15] sm:absolute sm:top-0" />
+          <img src="/arrow_back.svg" alt="back" className="size-6 sm:size-10 hover:scale-[1.15] sm:absolute sm:top-0" />
         </button>
         <div className="sm:px-10 w-full">
           <div className="flex justify-between">

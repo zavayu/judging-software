@@ -9,7 +9,7 @@ interface AuthUser {
   name: string;
   judgeID: string;
   role: string;
-  assignedProjects: Project[];
+  assignedProjects: string[];
 }
 
 interface LoginData {
