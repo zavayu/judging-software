@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import toast from "react-hot-toast";
 import axios from "axios";
-import { Project } from "./interfaces";
 
 interface Judge {
     _id: string;
@@ -20,10 +19,17 @@ interface JudgeStore {
     assignProjectToJudge: (judgeID: string, projectID: string) => Promise<void>;
 }
 
+const localIP = "192.168.0.15";
 const axiosInstance = axios.create({
-    baseURL: "http://localhost:5000/api",
-    withCredentials: true
+  baseURL: `http://${localIP}:5000/api`,
+  withCredentials: true
 });
+
+
+// const axiosInstance = axios.create({
+//     baseURL: "http://localhost:5000/api",
+//     withCredentials: true
+// });
 
 export const judgeStore = create<JudgeStore>((set, get) => ({
     judges: [],

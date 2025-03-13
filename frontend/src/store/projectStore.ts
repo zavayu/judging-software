@@ -14,10 +14,16 @@ interface ProjectStore {
     getProjectById: (id: string) => Promise<Project | null>;
 }
 
+const localIP = "192.168.0.15";
 const axiosInstance = axios.create({
-    baseURL: "http://localhost:5000/api",
-    withCredentials: true,
-  });
+  baseURL: `http://${localIP}:5000/api`,
+  withCredentials: true
+});
+
+// const axiosInstance = axios.create({
+//     baseURL: "http://localhost:5000/api",
+//     withCredentials: true,
+//   });
 
 export const projectStore = create<ProjectStore>((set, get) => ({
     projects: [],

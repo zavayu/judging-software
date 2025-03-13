@@ -3,23 +3,26 @@ import Navbar from "../components/Navbar"
 import ProjectList from "../components/ProjectList"
 import { projectStore } from "../store/projectStore"
 import JudgeProject from "../components/JudgeProject"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 export default function JudgeHome() {
-  const { selectedProject, setSelectedProject } = projectStore();
-  const [ showAllProjects, setShowAllProjects ] = useState(false);
+  useEffect(() => {
+    document.body.style.backgroundColor = "#2B262F";
+  }, []);
+  const { selectedProject } = projectStore();
+  const [showAllProjects, setShowAllProjects] = useState(false);
   return (
     <>
-      <div className="flex-row hidden sm:flex">
+      <div className="flex-row hidden sm:flex h-screen max-h-screen">
         <JudgeSidebar />
-        <div className="bg-Primary w-full h-full min-h-screen">
+        <div className="bg-Primary w-full overflow-y-scroll">
 
           <Navbar />
           {selectedProject ? <JudgeProject /> : <ProjectList />}
         </div>
       </div>
-      <div className="bg-Primary sm:hidden">
-        <Navbar setShowAllProjects={setShowAllProjects}/>
+      <div className="bg-Primary sm:hidden px-7">
+        <Navbar setShowAllProjects={setShowAllProjects} />
         {selectedProject ? <JudgeProject /> : (showAllProjects ? <ProjectList /> : <JudgeSidebar />)}
       </div>
     </>

@@ -56,9 +56,11 @@ export const login = async (req, res) => {
     }
     generateToken(user._id, res);
     res.status(200).json({
-      id: user.judgeID,
+      _id: user._id,
+      judgeID: user.judgeID,
       name: user.name,
       role: user.role,
+      assignedProjects: user.assignedProjects,
     });
   } catch (error) {
     console.error(error);

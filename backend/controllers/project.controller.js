@@ -54,7 +54,7 @@ export const updateProject = async (req, res) => {
     if (!updatedProject) {
       return res.status(404).json({ message: "Project not found" });
     }
-    //res.status(200).json(updatedProject);
+    res.status(200).json(updatedProject);
   } catch (error) {
     console.log("Error updating project:", error);
     res.status(500).json({ message: "Failed to update project" });

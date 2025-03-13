@@ -13,7 +13,9 @@ export default function ProjectList() {
   const judgingCompleted = projects.filter(project => project.timesJudged >= 4);
 
   return (
-    <div className="w-[85%] sm:h-[70vh] justify-self-center sm:border-4 border-[#383838] rounded-badge flex flex-col sm:flex-row sm:grid-rows-3 justify-center sm:justify-between p-10 text-Secondary overflow-scroll">
+    <div className="sm:w-[85%] sm:h-[70vh] justify-self-center sm:border-4 border-[#383838] rounded-badge flex flex-col sm:flex-row sm:grid-rows-3 justify-center sm:justify-between px-7 sm:p-10 text-Secondary overflow-scroll">
+      <h1 className="sm:hidden text-2xl font-bold">All Projects</h1>
+      <hr className="my-4 sm:hidden"/>
       {/*Ready to be Judged:*/}
       <div className="sm:w-[30%]">
         <div className="flex flex-row justify-between">
@@ -37,7 +39,8 @@ export default function ProjectList() {
         </ul>
       </div>
       <span className="border-r-2 border-[#383838] h-[100%]"></span>
-
+      <hr className="my-4 sm:hidden"/>
+        
       {/* Judging in Progress: */}
       <div className="sm:w-[30%]">
         <div className="flex flex-row justify-between">
@@ -65,6 +68,7 @@ export default function ProjectList() {
         </ul>
       </div>
       <span className="border-r-2 border-[#383838] h-[100%]"></span>
+      <hr className="my-4 sm:hidden"/>
 
       {/* Judging Completed: */}
       <div className="sm:w-[30%]">

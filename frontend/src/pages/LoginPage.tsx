@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
 import { authStore } from '../store/authStore';
 
 export default function LoginPage() {
-  const {login} = authStore();
+  const { login } = authStore();
   const [formData, setFormData] = useState({
     name: "",
     judgeID: "",
@@ -20,6 +20,10 @@ export default function LoginPage() {
     }
   };
 
+  useEffect(() => {
+    document.body.style.backgroundColor = "#2B262F";
+  }, []);
+
   return (
     <div className="w-full h-full min-h-screen bg-Primary flex flex-col justify-center items-center pt-10">
       <div className="text-center pb-16 sm:pb-10">
@@ -30,7 +34,7 @@ export default function LoginPage() {
           Judges Portal
         </h2>
       </div>
-      {/*Sign in Form:*/} 
+      {/*Sign in Form:*/}
       <div className="card card-normal bg-white text-black w-72 sm:w-96 shadow-2xl mb-32 justify-self-center">
         <div className="card-body">
           <form onSubmit={handleSubmit} className="gap-6">
@@ -75,7 +79,7 @@ export default function LoginPage() {
                 </Link>
               </p>
             </div>
-            
+
           </form>
         </div>
       </div>

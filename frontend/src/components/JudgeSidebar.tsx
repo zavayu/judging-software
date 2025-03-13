@@ -1,7 +1,7 @@
 import { authStore } from "../store/authStore";
 import { projectStore } from "../store/projectStore";
 import { useEffect, useState } from "react";
-import { Project } from "../store/interfaces"; 
+import { Project } from "../store/interfaces";
 import CircularProgressBar from "./CircularProgressBar";
 
 export default function JudgeSidebar() {
@@ -13,42 +13,54 @@ export default function JudgeSidebar() {
 
   useEffect(() => {
     const fetchProjects = async () => {
-      console.log("LOADING!", authUser, authUser?.assignedProjects);
       if (authUser?.assignedProjects) {
         const projectDetails = await Promise.all(
           authUser.assignedProjects.map((projectId) => getProjectById(projectId))
         );
         setProjects(projectDetails);
-
-        const totalScore = projectDetails.reduce((acc, project) => {
-          const judgeScores = project?.scores.find(score => score.judge === authUser._id)?.score;
-          if (judgeScores) {
-            const scoresArray = judgeScores.split(',').map(Number);
-            const projectAvgScore = scoresArray.reduce((sum, score) => sum + score, 0) / scoresArray.length;
-            return acc + projectAvgScore;
-          }
-          return acc;
-        }, 0);
-
-        const average = totalScore / projectDetails.length;
-        setAvgScore(average);
       }
     };
 
     fetchProjects();
   }, [authUser, getProjectById, authUser?.assignedProjects]);
 
+  useEffect(() => {
+    if (projects.length > 0) {
+      const totalScore = projects.reduce((acc, project) => {
+        const judgeScores = project?.scores.find(score => score.judge === authUser?._id)?.score;
+        if (judgeScores) {
+          const scoresArray = judgeScores.split(',').map(Number).filter(score => score > 0);
+          if (scoresArray.length > 0) {
+            const projectAvgScore = scoresArray.reduce((sum, score) => sum + score, 0) / scoresArray.length;
+            return acc + projectAvgScore;
+          }
+        }
+        return acc;
+      }, 0);
+
+      const scoredProjectsCount = projects.filter(project =>
+        project?.scores.some(score => score.judge === authUser?._id && score.score.split(',').some(s => Number(s) > 0))
+      ).length;
+
+      const average = scoredProjectsCount > 0 ? totalScore / scoredProjectsCount : 0;
+      setAvgScore(average);
+
+      const progressPercentage = (scoredProjectsCount / projects.length) * 100;
+      setProgress(progressPercentage);
+    }
+  }, [projects, authUser]);
+
   return (
-    <div className="bg-Primary sm:bg-[#2D2B2E] h-full min-h-screen sm:w-1/4 justify-center items-center text-center pt-10 text-Secondary">
+    <div className="bg-Primary sm:bg-[#2D2B2E] min-h-screen sm:w-1/4 justify-center items-center text-center py-10 text-Secondary sm:overflow-y-scroll">
       <h1 className="text-xl sm:text-2xl font-bold">
         Welcome, {authUser?.name}!
       </h1>
-      <div className="justify-self-center my-10">
+      <div className="justify-self-center my-10 justify-center px-28 sm:px-0">
         <CircularProgressBar sqSize={120} strokeWidth={7} percentage={progress} />
       </div>
 
       <hr className="mx-7 mt-6" />
-      {/* Judges List: */}
+      {/* Project List: */}
       <div className="">
         <h2 className="text-xl font-semibold mt-3">Your Assigned Projects</h2>
         <ul className="mt-5 px-6 space-y-2">

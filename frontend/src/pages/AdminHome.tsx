@@ -8,12 +8,14 @@ import { judgeStore } from "../store/judgeStore";
 import JudgeDetails from "../components/JudgeDetails";
 import { projectStore } from "../store/projectStore";
 import ProjectDetails from "../components/ProjectDetails";
+import Leaderboard from "../components/Leaderboard";
 
 export default function AdminHome() {
   const [addingJudge, setAddingJudge] = useState(false);
   const [addingProject, setAddingProject] = useState(false);
   const { selectedJudge, setSelectedJudge } = judgeStore();
   const { selectedProject, setSelectedProject } = projectStore();
+  const [showLeaderboard, setShowLeaderboard] = useState(false);
 
   return (
     <div className="flex flex-row">
@@ -25,6 +27,8 @@ export default function AdminHome() {
 
           <button onClick={() => {
             setAddingProject(!addingProject);
+            setSelectedJudge(null);
+            setShowLeaderboard(false);
             setAddingJudge(false);
             setSelectedJudge(null);
           }}
@@ -35,6 +39,8 @@ export default function AdminHome() {
 
           <button onClick={() => {
             setAddingJudge(!addingJudge);
+            setSelectedProject(null);
+            setShowLeaderboard(false);
             setAddingProject(false);
             setSelectedJudge(null);
           }}
@@ -43,13 +49,27 @@ export default function AdminHome() {
             <img src="/add.svg" alt="Add Judge" />Add Judge
           </button>
 
+          <button onClick={() => {
+            setShowLeaderboard(!showLeaderboard);
+            setSelectedJudge(null);
+            setSelectedProject(null);
+            setAddingJudge(false);
+            setAddingProject(false);
+            setSelectedJudge(null);
+          }}
+            className="btn bg-[#65558F] hover:bg-[#a895da] text-white text-lg rounded-2xl border-white"
+          >
+            <img src="/leaderboard.svg" alt="Add Judge" className="size-6"/>View Leaderboard
+          </button>
+
         </div>
 
-        {!addingJudge && !addingProject && !selectedJudge && !selectedProject ? <ProjectList /> : null}
-        {addingJudge && !selectedJudge ? <AddJudge/> : null}
-        {addingProject && !selectedJudge ? <AddProject/> : null}
-        {selectedProject ? <ProjectDetails/> : null}
-        {selectedJudge ? <JudgeDetails/> : null}
+        {!addingJudge && !addingProject && !selectedJudge && !selectedProject && !showLeaderboard ? <ProjectList /> : null}
+        {addingJudge && !selectedJudge && !showLeaderboard ? <AddJudge /> : null}
+        {addingProject && !selectedJudge && !showLeaderboard ? <AddProject /> : null}
+        {showLeaderboard ? <Leaderboard/> : null}
+        {selectedProject ? <ProjectDetails /> : null}
+        {selectedJudge ? <JudgeDetails /> : null}
       </div>
     </div>
   )

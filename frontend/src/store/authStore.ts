@@ -2,7 +2,6 @@ import { create } from "zustand";
 import toast from "react-hot-toast";
 import { io, Socket } from "socket.io-client";
 import axios from "axios";
-import { Project } from "./interfaces";
 
 interface AuthUser {
   _id: string;
@@ -29,12 +28,22 @@ interface AuthStore {
   disconnectSocket: () => void;
 }
 
+// for local host testing
+const localIP = "192.168.0.15";
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: `http://${localIP}:5000/api`,
   withCredentials: true
 });
 
-const BASE_URL = "http://localhost:5000";
+const BASE_URL = `http://${localIP}:5000`;
+
+
+// const axiosInstance = axios.create({
+//   baseURL: "http://localhost:5000/api",
+//   withCredentials: true
+// });
+
+// const BASE_URL = "http://localhost:5000";
 
 export const authStore = create<AuthStore>((set, get) => ({
   authUser: null,
@@ -44,6 +53,7 @@ export const authStore = create<AuthStore>((set, get) => ({
     try {
       const res = await axiosInstance.get("/auth/check");
       set({ authUser: res.data });
+      console.log("Auth user", res.data);
       get().connectSocket();
     } catch (error) {
       console.error(error);
@@ -64,9 +74,9 @@ export const authStore = create<AuthStore>((set, get) => ({
 
   login: async (data) => {
     try {
-      console.log("Login data", data);
       const res = await axiosInstance.post("/auth/login", data);
       set({ authUser: res.data });
+      console.log("Logged in", res.data);
       toast.success("Logged in successfully");
       get().connectSocket();
     } catch (error) {
