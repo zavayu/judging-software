@@ -64,6 +64,7 @@ export const authStore = create<AuthStore>((set, get) => ({
 
   login: async (data) => {
     try {
+      console.log("Logging in", data, import.meta.env.VITE_BASE_URL);
       const res = await axiosInstance.post("/auth/login", data);
       set({ authUser: res.data });
       console.log("Logged in", res.data);
