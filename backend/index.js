@@ -15,7 +15,7 @@ const BASE_URL = process.env.BASE_URL || "http://localhost:5173";
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-    origin: BASE_URL, 
+    origin: 'https://tidal-judging-software.vercel.app', 
     credentials: true
 }));
 
