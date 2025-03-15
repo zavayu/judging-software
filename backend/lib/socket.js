@@ -12,6 +12,7 @@ const BASE_URL = process.env.BASE_URL || "http://localhost:5173";
 const io = new Server(server, {
   cors: {
     origin: BASE_URL,
+    credentials: true,
   },
 });
 

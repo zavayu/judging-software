@@ -18,6 +18,7 @@ app.use(cookieParser());
 app.use(cors({
     origin: function (origin, callback) {
         console.log('Origin:', origin); // Log the origin of the request
+        console.log('Allowed Origins:', allowedOrigins); // Log the allowed origins
         // Allow requests with no origin (like mobile apps or curl requests)
         if (!origin) return callback(null, true);
         if (allowedOrigins.indexOf(origin) === -1) {
@@ -26,7 +27,7 @@ app.use(cors({
         }
         return callback(null, true);
     },
-    credentials: true
+    credentials: true,
 }));
 
 // Explicitly set the Access-Control-Allow-Origin header

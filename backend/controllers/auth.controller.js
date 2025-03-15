@@ -42,7 +42,7 @@ export const register = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const { name, judgeID, password } = req.body;
-
+    console.log("Login request:", req.body);
     const user = await Judge.findOne({ judgeID });
     if (judgeID == 0) {
       const isMatch = await bcrypt.compare(password, user?.password || "");
