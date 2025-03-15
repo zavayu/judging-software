@@ -11,11 +11,20 @@ import express from 'express';
 dotenv.config();
 const PORT = process.env.PORT || 5000;
 const BASE_URL = process.env.BASE_URL || "http://localhost:5173";
-
+const allowedOrigins = [BASE_URL, 'https://tidal-judging-software.vercel.app', 'https://judging-software.vercel.app', "http://localhost:5173"];
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-    origin: 'https://tidal-judging-software.vercel.app', 
+    origin: function (origin, callback) {
+        console.log('Origin:', origin); // Log the origin of the request
+        // Allow requests with no origin (like mobile apps or curl requests)
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.indexOf(origin) === -1) {
+            const msg = 'The CORS policy for this site does not allow access from the specified Origin.';
+            return callback(new Error(msg), false);
+        }
+        return callback(null, true);
+    },
     credentials: true
 }));
 
