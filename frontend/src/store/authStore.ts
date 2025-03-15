@@ -28,22 +28,12 @@ interface AuthStore {
   disconnectSocket: () => void;
 }
 
-// for local host testing
-const localIP = "192.168.0.15";
+const VITE_BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:5000";
+
 const axiosInstance = axios.create({
-  baseURL: `http://${localIP}:5000/api`,
+  baseURL: `${VITE_BASE_URL}/api`,
   withCredentials: true
 });
-
-const BASE_URL = `http://${localIP}:5000`;
-
-
-// const axiosInstance = axios.create({
-//   baseURL: "http://localhost:5000/api",
-//   withCredentials: true
-// });
-
-// const BASE_URL = "http://localhost:5000";
 
 export const authStore = create<AuthStore>((set, get) => ({
   authUser: null,
@@ -100,7 +90,7 @@ export const authStore = create<AuthStore>((set, get) => ({
   connectSocket: () => {
     const { authUser } = get();
     if (!authUser || get().socket?.connected) return;
-    const socket = io(BASE_URL, {
+    const socket = io(VITE_BASE_URL, {
       query: {
         userId: get().authUser?._id,
       },

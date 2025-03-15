@@ -10,15 +10,12 @@ import express from 'express';
 
 dotenv.config();
 const PORT = process.env.PORT || 5000;
+const BASE_URL = process.env.BASE_URL || "http://localhost:5173";
 
 app.use(express.json());
 app.use(cookieParser());
-// app.use(cors({
-//     origin: "http://localhost:5173",
-//     credentials: true
-// }));
 app.use(cors({
-    origin: "http://192.168.0.15:5173", // Replace with your actual local IP address
+    origin: BASE_URL, 
     credentials: true
 }));
 

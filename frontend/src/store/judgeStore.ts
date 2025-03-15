@@ -19,17 +19,12 @@ interface JudgeStore {
     assignProjectToJudge: (judgeID: string, projectID: string) => Promise<void>;
 }
 
-const localIP = "192.168.0.15";
+const VITE_BASE_URL = import.meta.env.VITE_BASE_URL || "http://localhost:5000";
+
 const axiosInstance = axios.create({
-  baseURL: `http://${localIP}:5000/api`,
+  baseURL: `${VITE_BASE_URL}/api`,
   withCredentials: true
 });
-
-
-// const axiosInstance = axios.create({
-//     baseURL: "http://localhost:5000/api",
-//     withCredentials: true
-// });
 
 export const judgeStore = create<JudgeStore>((set, get) => ({
     judges: [],
