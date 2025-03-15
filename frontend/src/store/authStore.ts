@@ -98,8 +98,20 @@ export const authStore = create<AuthStore>((set, get) => ({
   },
 
   connectSocket: () => {
-    const socket = io(BASE_URL);
+    const { authUser } = get();
+    if (!authUser || get().socket?.connected) return;
+    const socket = io(BASE_URL, {
+      query: {
+        userId: get().authUser?._id,
+      },
+    });
+    socket.connect();
     set({ socket });
+
+    socket.on("projectAssigned", async ({ projectID }) => {
+      console.log("Project assigned:", projectID);
+      set({ authUser: { ...authUser, assignedProjects: [...authUser.assignedProjects, projectID] } });
+    });
   },
 
   disconnectSocket: () => {

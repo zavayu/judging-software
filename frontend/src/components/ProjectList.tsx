@@ -2,10 +2,15 @@ import { useEffect } from "react";
 import { projectStore } from "../store/projectStore"
 
 export default function ProjectList() {
-  const { projects, fetchProjects, selectedProject, setSelectedProject } = projectStore();
+  const { projects, selectedProject, fetchProjects, setSelectedProject, subscribeToProjects, unsubscribeFromProjects } = projectStore();
 
   useEffect(() => {
     fetchProjects();
+    subscribeToProjects();
+    console.log("fetching projects")
+    return () => {
+      unsubscribeFromProjects();
+    };
   }, []);
 
   const readyToBeJudged = projects.filter(project => project.timesJudged === 0);

@@ -5,7 +5,7 @@ import { Judge } from "../store/interfaces";
 
 export default function ProjectDetails() {
   const { judges, fetchJudges, assignProjectToJudge } = judgeStore();
-  const { selectedProject, setSelectedProject } = projectStore();
+  const { selectedProject, setSelectedProject, deleteProject } = projectStore();
   const [selectedJudgeID, setSelectedJudgeID] = useState("");
   const [assignedJudges, setAssignedJudges] = useState<Judge[]>([]);
 
@@ -51,8 +51,38 @@ export default function ProjectDetails() {
             <h1 className="text-2xl text-[#E4E3E3] font-semibold pt-1">{selectedProject?.team}</h1>
           </div>
           <div>
-            <h1 className="sm:text-2xl text-Secondary">Table {selectedProject?.table}</h1>
-            <h1 className="sm:text-xl">Judged {selectedProject?.timesJudged} times</h1>
+            <h1 className="sm:text-2xl text-Secondary justify-self-center">Table {selectedProject?.table}</h1>
+            <h1 className="sm:text-lg text-[#9783CD]">Judged {selectedProject?.timesJudged} times</h1>
+          </div>
+          <div>
+          <button className="flex gap-2 bg-[#383838] border border-[#1f1919] px-4 py-2 rounded-lg text-white" onClick={() => {
+              const modal = document.getElementById('delete_project_modal');
+              if (modal) {
+                (modal as HTMLDialogElement).showModal();
+              }
+            }}>
+              <img src="/trash.svg" alt="delete" className="size-6 pt-1" />
+              <p className="text-xl">Delete </p>
+            </button>
+            <dialog id="delete_project_modal" className="modal text-white">
+              <div className="modal-box">
+                <h3 className="font-bold text-lg">Are you sure?</h3>
+                <p className="py-4">Deleting this project cannot be undone!</p>
+                <div className="modal-action mt-1 gap-2">
+                  <form method="dialog">
+                    <button className=" px-6 py-1 rounded border hover:border-[#585858]">Cancel</button>
+                  </form>
+                  <button
+                    className="bg-red-500 hover:bg-red-600 border border-red-500 hover:border-white px-6 py-1 rounded"
+                    onClick={() => {
+                      selectedProject?._id && deleteProject(selectedProject._id);
+                      setSelectedProject(null);
+                    }}>
+                    Delete
+                  </button>
+                </div>
+              </div>
+            </dialog>
           </div>
         </div>
 

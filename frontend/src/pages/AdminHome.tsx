@@ -67,8 +67,8 @@ export default function AdminHome() {
         {!addingJudge && !addingProject && !selectedJudge && !selectedProject && !showLeaderboard ? <ProjectList /> : null}
         {addingJudge && !selectedJudge && !showLeaderboard ? <AddJudge /> : null}
         {addingProject && !selectedJudge && !showLeaderboard ? <AddProject /> : null}
-        {showLeaderboard ? <Leaderboard/> : null}
-        {selectedProject ? <ProjectDetails /> : null}
+        {showLeaderboard && !selectedJudge && !selectedProject ? <Leaderboard/> : null}
+        {selectedProject && !selectedJudge ? <ProjectDetails /> : null}
         {selectedJudge ? <JudgeDetails /> : null}
       </div>
     </div>

@@ -1,4 +1,5 @@
 import Judge from "../models/judge.model.js";
+import { getUserSocketId, io } from "../lib/socket.js";
 
 // Fetch all judges
 export const fetchJudges = async (req, res) => {
@@ -51,6 +52,14 @@ export const assignProjectToJudge = async (req, res) => {
       judge.assignedProjects.push(projectID);
       await judge.save();
     }
+
+    const userSocketId = getUserSocketId(judge._id);
+    console.log(`Judge ${judgeID} socket ID: ${userSocketId}`);
+    if (userSocketId) {
+      console.log(`Emitting projectAssigned to judge ${judgeID}`);
+      io.to(userSocketId).emit("projectAssigned", { projectID });
+    }
+
     res.status(200).json(judge);
   } catch (error) {
     console.error("Error assigning project to judge:", error);

@@ -1,4 +1,5 @@
 import Project from "../models/project.model.js";
+import { io } from "../lib/socket.js";
 
 // Fetch all projects
 export const fetchProjects = async (req, res) => {
@@ -17,6 +18,9 @@ export const addProject = async (req, res) => {
     const { name, team, table } = req.body;
     const newProject = new Project({ name, team, table });
     await newProject.save();
+
+    io.emit("newProject", newProject);
+
     res.status(201).json(newProject);
   } catch (error) {
     console.error("Error adding project:", error);
@@ -64,11 +68,13 @@ export const updateProject = async (req, res) => {
 // Delete a project
 export const deleteProject = async (req, res) => {
   try {
-    const { name } = req.params;
-    const deletedProject = await Project.findOneAndDelete({ name });
+    console.log("Deleting project");
+    const { id } = req.params;
+    const deletedProject = await Project.findByIdAndDelete(id);
     if (!deletedProject) {
       return res.status(404).json({ message: "Project not found" });
     }
+    io.emit("deleteProject", deletedProject);
     res.status(200).json({ message: "Project deleted successfully" });
   } catch (error) {
     console.error("Error deleting project:", error);

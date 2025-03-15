@@ -13,14 +13,15 @@ export default function JudgeHome() {
   const [showAllProjects, setShowAllProjects] = useState(false);
   return (
     <>
+      {/* Desktop View*/}
       <div className="flex-row hidden sm:flex h-screen max-h-screen">
         <JudgeSidebar />
         <div className="bg-Primary w-full overflow-y-scroll">
-
           <Navbar />
           {selectedProject ? <JudgeProject /> : <ProjectList />}
         </div>
       </div>
+      {/* Mobile View*/}
       <div className="bg-Primary sm:hidden px-7">
         <Navbar setShowAllProjects={setShowAllProjects} />
         {selectedProject ? <JudgeProject /> : (showAllProjects ? <ProjectList /> : <JudgeSidebar />)}

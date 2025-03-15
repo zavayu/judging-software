@@ -50,6 +50,24 @@ export default function JudgeSidebar() {
     }
   }, [projects, authUser]);
 
+  useEffect(() => {
+    // Connect to the WebSocket server
+    const socket = authStore.getState().socket;
+
+    // Listen for the projectAssigned event
+    socket?.on("projectAssigned", async ({ projectID }) => {
+      console.log("Project assigned:", projectID);
+      const newProject = await getProjectById(projectID);
+      setProjects((prevProjects) => [...prevProjects, newProject]);
+    });
+
+    // Clean up the socket connection on component unmount
+    return () => {
+      socket?.off("projectAssigned");
+    };
+  }, [getProjectById]);
+
+
   return (
     <div className="bg-Primary sm:bg-[#2D2B2E] min-h-screen sm:w-1/4 justify-center items-center text-center py-10 text-Secondary sm:overflow-y-scroll">
       <h1 className="text-xl sm:text-2xl font-bold">
@@ -60,7 +78,7 @@ export default function JudgeSidebar() {
       </div>
 
       <hr className="mx-7 mt-6" />
-      {/* Project List: */}
+      {/* Assigned Project List: */}
       <div className="">
         <h2 className="text-xl font-semibold mt-3">Your Assigned Projects</h2>
         <ul className="mt-5 px-6 space-y-2">
