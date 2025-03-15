@@ -12,7 +12,9 @@
         "dest": "./index.js",
         "methods": ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
         "headers": {
-          "Access-Control-Allow-Origin": "https://tidal-judging-software.vercel.app"
+          "Access-Control-Allow-Origin": "https://tidal-judging-software.vercel.app",
+          "Access-Control-Allow-Credentials": "true"
+          
         }
       }
     ]
