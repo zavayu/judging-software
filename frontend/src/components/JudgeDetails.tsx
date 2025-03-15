@@ -39,6 +39,7 @@ export default function JudgeDetails() {
 
         const average = totalScore / projectDetails.length;
         setAvgScore(average);
+        console.log("Average score", avgScore);
       };
 
       fetchProjects();

@@ -8,7 +8,7 @@ export default function AddJudge() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await addJudge({ name, judgeID, assignedProjects: [] });
+    await addJudge({ name, judgeID, assignedProjects: [], _id: "" });
     setName("");
     setJudgeID("");
   };
