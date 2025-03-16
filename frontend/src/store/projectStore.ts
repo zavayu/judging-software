@@ -17,7 +17,7 @@ interface ProjectStore {
     getProjectById: (id: string) => Promise<Project | null>;
 }
 
-const VITE_BASE_URL = import.meta.env.VITE_BASE_URL;
+const VITE_BASE_URL = import.meta.env.VITE_BASE_URL || '';
 
 const axiosInstance = axios.create({
   baseURL: `${VITE_BASE_URL}/api`,

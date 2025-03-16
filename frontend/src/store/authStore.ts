@@ -28,7 +28,7 @@ interface AuthStore {
   disconnectSocket: () => void;
 }
 
-const VITE_BASE_URL = import.meta.env.VITE_BASE_URL;
+const VITE_BASE_URL = import.meta.env.VITE_BASE_URL || '';
 
 const axiosInstance = axios.create({
   baseURL: `${VITE_BASE_URL}/api`,
