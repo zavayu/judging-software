@@ -23,6 +23,9 @@ const judgeSchema = new mongoose.Schema({
     },
     password: {
         type: String,
+    },
+    group: {
+        type: String,
     }
 });
 

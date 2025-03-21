@@ -3,11 +3,13 @@ export interface Judge {
   judgeID: string;
   name: string;
   assignedProjects: string[];
+  group: string;
 }
 
 export interface Score {
   judge: string;
   score: string;
+  feedback: string;
 }
 
 export interface Project {

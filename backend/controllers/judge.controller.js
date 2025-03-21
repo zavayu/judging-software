@@ -66,3 +66,26 @@ export const assignProjectToJudge = async (req, res) => {
     res.status(500).json({ message: "Failed to assign project to judge" });
   }
 };
+
+// Update a judge's details
+export const updateJudge = async (req, res) => {
+  try {
+    const { judgeID } = req.params;
+    const updateData = req.body;
+
+    const updatedJudge = await Judge.findOneAndUpdate(
+      { judgeID },
+      updateData,
+      { new: true, runValidators: true } // Return the updated document and run validation
+    );
+
+    if (!updatedJudge) {
+      return res.status(404).json({ message: "Judge not found" });
+    }
+
+    res.status(200).json(updatedJudge);
+  } catch (error) {
+    console.error("Error updating judge:", error);
+    res.status(500).json({ message: "Failed to update judge" });
+  }
+};

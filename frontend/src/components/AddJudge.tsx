@@ -3,12 +3,12 @@ import { judgeStore } from "../store/judgeStore";
 
 export default function AddJudge() {
   const [name, setName] = useState("");
-  const [judgeID, setJudgeID] = useState("");
+  const [judgeID, setJudgeID] = useState(Math.floor(1000 + Math.random() * 9000).toString());
   const { addJudge } = judgeStore();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await addJudge({ name, judgeID, assignedProjects: [], _id: "" });
+    await addJudge({ name, judgeID, assignedProjects: [], _id: "", group: "" });
     setName("");
     setJudgeID("");
   };

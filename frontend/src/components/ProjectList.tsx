@@ -7,7 +7,6 @@ export default function ProjectList() {
   useEffect(() => {
     fetchProjects();
     subscribeToProjects();
-    console.log("fetching projects")
     return () => {
       unsubscribeFromProjects();
     };

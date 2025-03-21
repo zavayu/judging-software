@@ -63,7 +63,7 @@ export default function Leaderboard() {
                 <h3 className="text-md font-semibold text-white">{project.name}</h3>
                 <p className="text-sm">{project.team}</p>
               </div>
-              <p className="py-3 text-sm">Average Score: {project.averageScore.toFixed(2)}</p>
+              <p className="py-3 text-sm">Average Score: {project.averageScore.toFixed(3)}</p>
             </div>
           </li>
         ))}

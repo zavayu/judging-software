@@ -1,13 +1,7 @@
 import { create } from "zustand";
 import toast from "react-hot-toast";
 import axios from "axios";
-
-interface Judge {
-    _id: string;
-    judgeID: string;
-    name: string;
-    assignedProjects: string[];
-}
+import { Judge } from "./interfaces";
 
 interface JudgeStore {
     judges: Judge[];
@@ -17,6 +11,7 @@ interface JudgeStore {
     addJudge: (judge: Judge) => Promise<void>;
     deleteJudge: (judgeID: string) => Promise<void>;
     assignProjectToJudge: (judgeID: string, projectID: string) => Promise<void>;
+    updateJudge: (judgeID: string, updatedData: Partial<Judge>) => Promise<void>;
 }
 
 const VITE_BASE_URL = import.meta.env.VITE_BASE_URL || '';
@@ -78,4 +73,19 @@ export const judgeStore = create<JudgeStore>((set, get) => ({
         toast.error("Failed to assign project to judge");
       }
     },
+
+    updateJudge: async (judgeID, updatedData) => {
+      try {
+          const res = await axiosInstance.put(`/judge/update-judge/${judgeID}`, updatedData);
+          set({
+              judges: get().judges.map((judge) =>
+                  judge.judgeID === judgeID ? res.data : judge
+              ),
+          });
+          toast.success("Judge updated successfully");
+      } catch (error) {
+          console.error(error);
+          toast.error("Failed to update judge");
+      }
+  },
 }));

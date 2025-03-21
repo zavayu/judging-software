@@ -1,11 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { projectStore } from "../store/projectStore";
 
 export default function AddProject() {
-  const { addProject } = projectStore();
+  const { projects, addProject } = projectStore();
   const [name, setName] = useState("");
   const [team, setTeam] = useState("");
   const [table, setTable] = useState("");
+
+  // Calculate the default table number
+  useEffect(() => {
+    if (projects.length > 0) {
+      const maxTable = Math.max(...projects.map((project) => parseInt(project.table || "0", 10)));
+      setTable((maxTable + 1).toString());
+    } else {
+      setTable("1"); // Default to 1 if there are no projects
+    }
+  }, [projects]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

@@ -79,7 +79,7 @@ export const projectStore = create<ProjectStore>((set, get) => ({
                 projects: get().projects.map(p => p._id === id ? res.data : p),
                 selectedProject: res.data,
             });
-            toast.success("Project updated successfully");
+            //toast.success("Project updated successfully");
         } catch (error) {
             console.error(error);
             toast.error("Failed to update project");
