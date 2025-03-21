@@ -4,7 +4,7 @@ import { projectStore } from "../store/projectStore";
 import { Project } from "../store/interfaces";
 
 export default function JudgeDetails() {
-  const { judges, selectedJudge, setSelectedJudge, assignProjectToJudge, updateJudge, deleteJudge } = judgeStore();
+  const { selectedJudge, setSelectedJudge, assignProjectToJudge, updateJudge, deleteJudge } = judgeStore();
   const { projects, getProjectById } = projectStore();
   const [selectedProjectID, setSelectedProjectID] = useState("");
   const [assignedProjects, setAssignedProjects] = useState<(Project | null)[]>([]);
