@@ -32,7 +32,7 @@ export default function Leaderboard() {
     // if (judge) {
     //   console.log(`${judge.name}: Mean = ${mean}, StdDev = ${stdDev}`);
     // }
-    
+
     return { judgeId, mean, stdDev };
   });
 
@@ -56,14 +56,18 @@ export default function Leaderboard() {
     <div className="w-[85%] h-[70vh] justify-self-center border-4 border-[#383838] rounded-badge flex flex-col p-10 text-Secondary overflow-y-scroll">
       <h1 className="text-2xl pb-3">Leaderboard</h1>
       <ul>
-        {sortedProjects.map((project) => (
+        {sortedProjects.map((project, index) => (
           <li key={project.name} className="mb-2">
-            <div className="py-3 px-4 border border-gray-300 bg-[#333E63] hover:bg-[#5d70ab] rounded-2xl flex justify-between cursor-pointer " onClick={() => setSelectedProject(project)}>
-              <div>
-                <h3 className="text-md font-semibold text-white">{project.name}</h3>
-                <p className="text-sm">{project.team}</p>
+            <div className="py-3 px-6 border border-gray-300 bg-[#333E63] hover:bg-[#5d70ab] rounded-2xl flex justify-between cursor-pointer " onClick={() => setSelectedProject(project)}>
+              <div className="flex gap-8">
+                <p className="text-xl font-bold pt-1">{index+1}</p>
+                <div>
+                  <h3 className="text-md font-semibold text-white">{project.name}</h3>
+                  <p className="text-sm">{project.team}</p>
+                </div>
+
               </div>
-              <p className="py-3 text-sm">Average Score: {project.averageScore.toFixed(3)}</p>
+              <p className="py-3 text-sm">Normalized Score: {project.averageScore.toFixed(3)}</p>
             </div>
           </li>
         ))}

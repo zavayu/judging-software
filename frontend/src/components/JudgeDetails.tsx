@@ -80,6 +80,7 @@ export default function JudgeDetails() {
           <div className="px-10">
             <h1 className="text-3xl text-white font-semibold">{selectedJudge?.name}</h1>
             <h1 className="text-2xl text-[#E4E3E3] font-semibold pt-1">ID: {selectedJudge?.judgeID}</h1>
+            {/* <p>Average Score: {avgScore}</p> */}
           </div>
           <div>
             {/* Delete Judge Button */}
@@ -200,22 +201,32 @@ export default function JudgeDetails() {
             </button>
           </div>
 
-          <h2 className="text-xl font-semibold mt-3">Assigned Group: <span className="text-white">{selectedJudge?.group || "N/A"}</span></h2>
-          {/* List of Judges in the Same Group */}
+          <h2 className="text-xl font-semibold mt-3">Additional Scores:</h2>
+          {/* Additional Scores List */}
           <ul className="mt-3 space-y-2 max-w-[75%] justify-start">
-            {judges
-              .filter((judge) => judge.group === selectedJudge?.group && judge.judgeID !== selectedJudge?.judgeID)
-              .map((judge) => (
-                <li
-                  key={judge.judgeID}
-                  className="py-3 px-4 border border-gray-300 bg-[#333E63] rounded-2xl flex justify-between"
-                >
-                  <div className="text-left">
-                    <h3 className="text-md font-semibold text-white">{judge.name}</h3>
-                    <p className="text-sm">ID: {judge.judgeID}</p>
+            {projects
+              .filter(
+                (project) =>
+                  !selectedJudge?.assignedProjects.includes(project._id) && // Not assigned to the judge
+                  project.scores.some((score) => score.judge === selectedJudge?._id) // Scored by the judge
+              )
+              .map((project) => {
+                const judgeScore = project.scores.find((score) => score.judge === selectedJudge?._id)?.score;
+
+                return (
+                  <div
+                    className="py-3 px-4 border border-gray-300 bg-[#333E63] rounded-2xl flex justify-between"
+                    key={project._id}
+                  >
+                    <div className="text-left">
+                      <h3 className="text-md font-semibold text-white">{project.name}</h3>
+                      <p className="text-sm">{project.team}</p>
+                      <p className="text-sm text-green-400">Score: {judgeScore}</p>
+                    </div>
+                    <p className="py-3 text-sm">Table {project.table}</p>
                   </div>
-                </li>
-              ))}
+                );
+              })}
           </ul>
         </div>
 

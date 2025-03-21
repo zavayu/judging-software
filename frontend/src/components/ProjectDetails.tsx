@@ -6,10 +6,16 @@ import { toast } from "react-hot-toast";
 
 export default function ProjectDetails() {
   const { judges, fetchJudges, assignProjectToJudge } = judgeStore();
-  const { selectedProject, setSelectedProject, deleteProject } = projectStore();
+  const { selectedProject, setSelectedProject, deleteProject, updateProject } = projectStore();
   const [selectedJudgeID, setSelectedJudgeID] = useState("");
   const [assignedJudges, setAssignedJudges] = useState<Judge[]>([]);
   const [selectedGroup, setSelectedGroup] = useState<string | "">("");
+  const [editing, setEditing] = useState(false);
+
+  // State variables for editing
+  const [editedName, setEditedName] = useState(selectedProject?.name || "");
+  const [editedTeam, setEditedTeam] = useState(selectedProject?.team || "");
+  const [editedTable, setEditedTable] = useState(selectedProject?.table || "");
 
   // Fetch judges on component mount
   useEffect(() => {
@@ -46,38 +52,72 @@ export default function ProjectDetails() {
     if (selectedProject && selectedGroup) {
       // Filter judges by the selected group
       const groupJudges = judges.filter((judge) => judge.group === selectedGroup);
-  
+
       if (groupJudges.length === 0) {
         toast.error("No judges found in the selected group");
         return;
       }
-  
+
       // Filter out judges who already have the project assigned
       const unassignedJudges = groupJudges.filter(
         (judge) => !judge.assignedProjects.includes(selectedProject._id)
       );
-  
+
       if (unassignedJudges.length === 0) {
         toast.error("The selected group is already assigned to this project");
         return;
       }
-  
+
       // Assign the project to each unassigned judge in the group
       await Promise.all(
         unassignedJudges.map(async (judge) => {
           await assignProjectToJudge(judge.judgeID, selectedProject._id);
         })
       );
-  
+
       // Update the list of assigned judges
       setAssignedJudges((prev) => [...prev, ...unassignedJudges]);
-  
+
       setSelectedGroup(""); // Reset the selected group after assignment
     } else {
       toast.error("Please select a group and a project");
     }
   };
 
+  // Update local state when the selected project changes
+  useEffect(() => {
+    if (selectedProject) {
+      setEditedName(selectedProject.name || "");
+      setEditedTeam(selectedProject.team || "");
+      setEditedTable(selectedProject.table || "");
+    }
+  }, [selectedProject]);
+
+  // Save changes to the project
+  const handleSave = async () => {
+    if (selectedProject) {
+      const updatedProject = {
+        ...selectedProject,
+        name: editedName,
+        team: editedTeam,
+        table: editedTable,
+      };
+
+      await updateProject(selectedProject._id, updatedProject); // Call the store's update function
+      setSelectedProject(updatedProject); // Update the selected project in the store
+      toast.success("Project updated successfully!");
+      setEditing(false); // Exit editing mode
+    }
+  };
+
+  // Cancel editing and reset changes
+  const handleCancel = () => {
+    setEditedName(selectedProject?.name || "");
+    setEditedTeam(selectedProject?.team || "");
+    setEditedTable(selectedProject?.table || "");
+    setEditing(false); // Exit editing mode
+  }
+  
   // Filter out the admin
   const filteredJudges = judges.filter((judge) => judge.judgeID !== "0");
 
@@ -92,49 +132,105 @@ export default function ProjectDetails() {
 
         {/* Project details */}
         <div className="px-10 w-[90%] flex justify-between">
-          <div>
-            <h1 className="text-xl sm:text-3xl font-semibold pb-1">{selectedProject?.name}</h1>
-            <h1 className="text-2xl text-[#E4E3E3] font-semibold pt-1">{selectedProject?.team}</h1>
+          <div className="flex flex-col">
+            {editing ? (
+              <input
+                type="text"
+                className="bg-transparent text-xl sm:text-3xl font-semibold placeholder:text-Secondary pb-1 input-bordered input max-w-xs"
+                value={editedName}
+                onChange={(e) => setEditedName(e.target.value)}
+              />
+            ) : (
+              <h1 className="text-xl sm:text-3xl font-semibold pb-1">{selectedProject?.name}</h1>
+            )}
+
+            {editing ? (
+              <input
+                type="text"
+                className="bg-transparent text-2xl font-semibold placeholder:text-[#E4E3E3] pb-1 input-bordered input max-w-xs"
+                value={editedTeam}
+                onChange={(e) => setEditedTeam(e.target.value)}
+              />
+            ) : (
+              <h1 className="text-2xl text-[#E4E3E3] font-semibold pt-1">{selectedProject?.team}</h1>
+            )}
           </div>
           <div>
-            <h1 className="sm:text-2xl text-Secondary justify-self-center">Table {selectedProject?.table}</h1>
-            <h1 className="sm:text-lg text-[#9783CD]">Judged {selectedProject?.timesJudged} times</h1>
+            {editing ? (
+              <input
+                type="text"
+                className="bg-transparent sm:text-2xl placeholder:text-Secondary pb-1 input-bordered input justify-self-center max-w-[8rem]"
+                value={editedTable}
+                onChange={(e) => setEditedTable(e.target.value)}
+              />
+            ) : (
+              <h1 className="sm:text-2xl text-Secondary justify-self-center">Table {selectedProject?.table}</h1>
+            )}
           </div>
           <div>
             {/* Delete button */}
-            <button className="flex gap-2 bg-[#383838] border border-[#1f1919] px-4 py-2 rounded-lg text-white" onClick={() => {
-              const modal = document.getElementById('delete_project_modal');
-              if (modal) {
-                (modal as HTMLDialogElement).showModal();
-              }
-            }}>
+            <button
+              className="flex gap-2 bg-[#383838] border border-[#1f1919] px-4 py-2 rounded-lg text-white text-xl"
+              onClick={() => {
+                const modal = document.getElementById("delete_project_modal");
+                if (modal) {
+                  (modal as HTMLDialogElement).showModal();
+                }
+              }}
+            >
               <img src="/trash.svg" alt="delete" className="size-6 pt-1" />
-              <p className="text-xl">Delete </p>
+              Delete
             </button>
 
-            {/* Delete project confirmation modal */}
-            <dialog id="delete_project_modal" className="modal text-white">
-              <div className="modal-box">
-                <h3 className="font-bold text-lg">Are you sure?</h3>
-                <p className="py-4">Deleting this project cannot be undone!</p>
-                <div className="modal-action mt-1 gap-2">
-                  <form method="dialog">
-                    <button className=" px-6 py-1 rounded border hover:border-[#585858]">Cancel</button>
-                  </form>
-                  <button
-                    className="bg-red-500 hover:bg-red-600 border border-red-500 hover:border-white px-6 py-1 rounded"
-                    onClick={() => {
-                      selectedProject?._id && deleteProject(selectedProject._id);
-                      setSelectedProject(null);
-                    }}>
-                    Delete
-                  </button>
-                </div>
+            {/* Edit/Save/Cancel buttons */}
+            {editing ? (
+              <div className="flex flex-col gap-2 mt-2">
+                <button
+                  className="flex gap-2 bg-[#4CAF50] border border-[#1f1919] px-4 py-2 rounded-lg text-white text-xl"
+                  onClick={handleSave}
+                >
+                  Save
+                </button>
+                <button
+                  className="flex gap-2 bg-[#F44336] border border-[#1f1919] px-4 py-2 rounded-lg text-white text-xl"
+                  onClick={handleCancel}
+                >
+                  Cancel
+                </button>
               </div>
-            </dialog>
-
+            ) : (
+              <button
+                className="flex gap-2 bg-[#383838] border border-[#1f1919] px-4 py-2 rounded-lg text-white text-xl mt-2"
+                onClick={() => setEditing(true)}
+              >
+                Edit
+                <img src="edit.svg" alt="edit" className="size-6 pt-1" />
+              </button>
+            )}
           </div>
         </div>
+
+        {/* Delete project confirmation modal */}
+        <dialog id="delete_project_modal" className="modal text-white">
+          <div className="modal-box">
+            <h3 className="font-bold text-lg">Are you sure?</h3>
+            <p className="py-4">Deleting this project cannot be undone!</p>
+            <div className="modal-action mt-1 gap-2">
+              <form method="dialog">
+                <button className=" px-6 py-1 rounded border hover:border-[#585858]">Cancel</button>
+              </form>
+              <button
+                className="bg-red-500 hover:bg-red-600 border border-red-500 hover:border-white px-6 py-1 rounded"
+                onClick={() => {
+                  selectedProject?._id && deleteProject(selectedProject._id);
+                  setSelectedProject(null);
+                }}>
+                Delete
+              </button>
+            </div>
+          </div>
+        </dialog>
+
       </div>
 
       <hr className="w-[90%] justify-self-center place-self-center mt-3" />
@@ -181,8 +277,12 @@ export default function ProjectDetails() {
                   <div className="text-left">
                     <h3 className="text-md font-semibold text-white">{judge.name}</h3>
                     <p className="text-sm">ID: {judge.judgeID}</p>
-                    <p>
-                      {judgeScore ? `Score: ${judgeScore.score}` : "Not yet scored"}
+                    <p className="text-sm">
+                      {judgeScore ? (
+                        <p className="text-sm text-green-400">Score: {judgeScore.score}</p>
+                      ) : (
+                        <p className="text-sm text-red-400">Not Scored Yet</p>
+                      )}
                     </p>
                   </div>
                 </div>
@@ -234,8 +334,12 @@ export default function ProjectDetails() {
                   <div className="text-left">
                     <h3 className="text-md font-semibold text-white">{judge.name}</h3>
                     <p className="text-sm">ID: {judge.judgeID}</p>
-                    <p>
-                      {score ? `Score: ${score.score}` : "Not yet scored"}
+                    <p className="text-sm">
+                      {score ? (
+                        <p className="text-sm text-green-400">Score: {score.score}</p>
+                      ) : (
+                        <p className="text-sm text-red-400">Not Scored Yet</p>
+                      )}
                     </p>
                   </div>
                 </div>
@@ -245,6 +349,6 @@ export default function ProjectDetails() {
         </div>
 
       </div>
-    </div>
+    </div >
   );
 }
