@@ -22,7 +22,7 @@ export default function AddProject() {
     await addProject({ name, team, table, timesJudged: 0, _id: "", scores: [] });
     setName("");
     setTeam("");
-    setTable("");
+    setTable((parseInt(table || "0", 10) + 1).toString());
   };
   return (
     <div className="w-[85%] h-[65vh] justify-self-center border-4 border-[#383838] rounded-badge flex flex-col p-10 text-Secondary">

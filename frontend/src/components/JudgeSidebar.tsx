@@ -22,7 +22,7 @@ export default function JudgeSidebar() {
     };
 
     fetchProjects();
-  }, [authUser, getProjectById, authUser?.assignedProjects]);
+  }, [authUser, getProjectById, authUser?.assignedProjects, selectedProject]);
 
   useEffect(() => {
     if (projects.length > 0) {
@@ -48,7 +48,7 @@ export default function JudgeSidebar() {
       const progressPercentage = (scoredProjectsCount / projects.length) * 100;
       setProgress(progressPercentage);
     }
-  }, [projects, authUser]);
+  }, [projects, authUser, authUser?.assignedProjects, selectedProject]);
 
   useEffect(() => {
     // Connect to the WebSocket server

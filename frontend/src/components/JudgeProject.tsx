@@ -92,7 +92,7 @@ export default function JudgeProject() {
 
       try {
         await updateProject(selectedProject._id, updatedProject);
-        console.log("Project updated successfully: ", updatedProject.scores);
+        //console.log("Project updated successfully: ", updatedProject.scores);
         setSelectedProject(updatedProject);
       } catch (error) {
         console.error("Failed to update project", error);

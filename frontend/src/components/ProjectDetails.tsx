@@ -67,7 +67,6 @@ export default function ProjectDetails() {
         toast.error("The selected group is already assigned to this project");
         return;
       }
-
       // Assign the project to each unassigned judge in the group
       await Promise.all(
         unassignedJudges.map(async (judge) => {
@@ -76,7 +75,7 @@ export default function ProjectDetails() {
       );
 
       // Update the list of assigned judges
-      setAssignedJudges((prev) => [...prev, ...unassignedJudges]);
+      //setAssignedJudges((prev) => [...prev, ...unassignedJudges]);
 
       setSelectedGroup(""); // Reset the selected group after assignment
     } else {
@@ -257,7 +256,11 @@ export default function ProjectDetails() {
                 </select>
               </label>
               <button
-                onClick={handleAssign}
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault(); 
+                  handleAssign();
+                }}
                 className="mt-4 p-2 bg-[#6d7fb4] text-white rounded hover:bg-[#7d95dc]"
               >
                 Assign Judge
@@ -277,13 +280,13 @@ export default function ProjectDetails() {
                   <div className="text-left">
                     <h3 className="text-md font-semibold text-white">{judge.name}</h3>
                     <p className="text-sm">ID: {judge.judgeID}</p>
-                    <p className="text-sm">
+                    <div className="text-sm">
                       {judgeScore ? (
                         <p className="text-sm text-green-400">Score: {judgeScore.score}</p>
                       ) : (
                         <p className="text-sm text-red-400">Not Scored Yet</p>
                       )}
-                    </p>
+                    </div>
                   </div>
                 </div>
               );
@@ -311,7 +314,11 @@ export default function ProjectDetails() {
                 </select>
               </label>
               <button
-                onClick={handleGroupAssign}
+                type="button" // Prevents form submission
+                onClick={(e) => {
+                  e.preventDefault(); // Prevent default form submission
+                  handleGroupAssign();
+                }}
                 className="mt-4 p-2 bg-[#6d7fb4] text-white rounded hover:bg-[#]"
               >
                 Assign Group
@@ -334,13 +341,13 @@ export default function ProjectDetails() {
                   <div className="text-left">
                     <h3 className="text-md font-semibold text-white">{judge.name}</h3>
                     <p className="text-sm">ID: {judge.judgeID}</p>
-                    <p className="text-sm">
+                    <div className="text-sm">
                       {score ? (
                         <p className="text-sm text-green-400">Score: {score.score}</p>
                       ) : (
                         <p className="text-sm text-red-400">Not Scored Yet</p>
                       )}
-                    </p>
+                    </div>
                   </div>
                 </div>
               )

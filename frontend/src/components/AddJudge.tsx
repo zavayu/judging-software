@@ -10,7 +10,7 @@ export default function AddJudge() {
     e.preventDefault();
     await addJudge({ name, judgeID, assignedProjects: [], _id: "", group: "" });
     setName("");
-    setJudgeID("");
+    setJudgeID(Math.floor(1000 + Math.random() * 9000).toString());
   };
 
   return (

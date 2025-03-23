@@ -56,22 +56,37 @@ export default function Leaderboard() {
     <div className="w-[85%] h-[70vh] justify-self-center border-4 border-[#383838] rounded-badge flex flex-col p-10 text-Secondary overflow-y-scroll">
       <h1 className="text-2xl pb-3">Leaderboard</h1>
       <ul>
-        {sortedProjects.map((project, index) => (
-          <li key={project.name} className="mb-2">
-            <div className="py-3 px-6 border border-gray-300 bg-[#333E63] hover:bg-[#5d70ab] rounded-2xl flex justify-between cursor-pointer " onClick={() => setSelectedProject(project)}>
-              <div className="flex gap-8">
-                <p className="text-xl font-bold pt-1">{index+1}</p>
-                <div>
-                  <h3 className="text-md font-semibold text-white">{project.name}</h3>
-                  <p className="text-sm">{project.team}</p>
-                </div>
+  {sortedProjects.map((project, index) => {
+    // Determine the color based on the rank
+    const rankColor =
+      index + 1 === 1
+        ? "text-yellow-500" // Gold
+        : index + 1 === 2
+        ? "text-gray-300" // Silver
+        : index + 1 === 3
+        ? "text-amber-700" // Bronze
+        : "text-white"; // Default color for other ranks
 
-              </div>
-              <p className="py-3 text-sm">Normalized Score: {project.averageScore.toFixed(3)}</p>
+    return (
+      <li key={project.name} className="mb-2">
+        <div
+          className="py-3 px-6 border border-gray-300 bg-[#333E63] hover:bg-[#5d70ab] rounded-2xl flex justify-between cursor-pointer"
+          onClick={() => setSelectedProject(project)}
+        >
+          <div className="flex gap-8">
+            {/* Apply the rank color */}
+            <p className={`text-xl font-bold pt-1 ${rankColor}`}>{index + 1}</p>
+            <div>
+              <h3 className="text-md font-semibold">{project.name}</h3>
+              <p className="text-sm">{project.team}</p>
             </div>
-          </li>
-        ))}
-      </ul>
+          </div>
+          <p className="py-3 text-sm">Normalized Score: {project.averageScore.toFixed(3)}</p>
+        </div>
+      </li>
+    );
+  })}
+</ul>
     </div>
   )
 }
